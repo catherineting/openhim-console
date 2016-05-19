@@ -1,0 +1,100 @@
+<div class="page-content">
+  <div class="row">
+    <!-- include the sidebar -->
+    <div ng-include="'views/sidebar.html'"></div>
+    <div class="col-md-10">
+      <div class="content-box-large">
+
+        <div class="panel-heading">
+          <div class="panel-title" style="float: inherit">
+            <h2><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;Dashboard</h2>
+          </div>
+        </div>
+
+        <!-- server Alerts -->
+        <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+        <!-- Server Alerts -->
+
+        <div class="panel-body" ng-show="!alerts.server">
+
+          <div style="margin: 20px 0px;" ng-if="activeChannels || loadTotal || avgResponseTime">
+            <div class="panel-body">
+              <div ng-if="activeChannels" class="content-box-large dashboard-info-box">
+                Active Channels (Today): <br /><strong>{{activeChannels}}</strong>
+              </div>
+              <div ng-if="loadTotal" class="content-box-large dashboard-info-box">
+                Total Transactions (Today): <br /><strong>{{loadTotal}}</strong>
+              </div>
+              <div ng-if="avgResponseTime" class="content-box-large dashboard-info-box">
+                Average Response Time (Today): <br /><strong>{{avgResponseTime}} ms</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-box-large bordered-box">
+            <div class="panel-heading">
+              <div class="panel-title">Transaction Load (Today - Per Hour)</div>
+              <div class="panel-options">
+                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getLoadMetrics()"></i>
+              </div>
+            </div>
+
+            <!-- Transaction Load Alerts -->
+            <alert ng-repeat="alert in alerts.load" type="alert.type">{{alert.msg}}</alert>
+            <!-- Transaction Load Alerts -->
+
+            <div class="panel-body" ng-if="!alerts.load">
+              <div morris-line-chart
+                id="transaction-load-graph" 
+                data="transactionLoadData"
+                style="height: 250px;">
+              </div>
+            </div>
+          </div>
+
+          <div class="content-box-large bordered-box">
+            <div class="panel-heading">
+              <div class="panel-title">Average Response Time (Today - Per Hour)</div>
+              <div class="panel-options">
+                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getTimeMetrics()"></i>
+              </div>
+            </div>
+
+            <!-- Transaction Load Alerts -->
+            <alert ng-repeat="alert in alerts.responseTime" type="alert.type">{{alert.msg}}</alert>
+            <!-- Transaction Load Alerts -->
+
+            <div class="panel-body" ng-if="!alerts.responseTime">
+              <div morris-line-chart
+                id="response-time-graph" 
+                data="transactionResponseTimeData"
+                style="height: 250px;">
+              </div>
+            </div>
+          </div>
+
+          <div class="content-box-large bordered-box">
+            <div class="panel-heading">
+              <div class="panel-title">Transaction Statuses (Today - Per Channel)</div>
+              <div class="panel-options">
+                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getStatusMetrics()"></i>
+              </div>
+            </div>
+
+            <!-- Transaction Load Alerts -->
+            <alert ng-repeat="alert in alerts.status" type="alert.type">{{alert.msg}}</alert>
+            <!-- Transaction Load Alerts -->
+            
+            <div class="panel-body" ng-if="!alerts.status">
+              <div morris-bar-chart
+                id="transaction-status-graph"
+                data="statusData"
+                style="height: 250px;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
