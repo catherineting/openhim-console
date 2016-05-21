@@ -5,6 +5,7 @@
     <span ng-show="!update">Add</span>
      a revoked certificate</h4>
 </div>
+
 <form name="form" novalidate>
   <div class="modal-body">
 
@@ -18,18 +19,53 @@
 
     <fieldset>
       <div class="form-group-2columns">
-        <div class="form-group pull-left"  ng-class="{ 'has-error' : ngError.days }">
-          <label><span>*</span> Validity in days [365]</label>
-          <input class="form-control" type="number" ng-model="cert.days" ng-disabled="update" focus="true" />
+        <div class="form-group pull-left"  ng-class="{ 'has-error' : ngError.fingerprint }">
+          <label><span>*</span> Fingerprint</label>
+          <input class="form-control" placeholder="" type="text" ng-model="item.fingerprint" ng-disabled="update" focus="true" />
         </div>
+
         <div class="form-group pull-right"  ng-class="{ 'has-error' : ngError.commonName }">
-          <label><span>*</span> Common Name (e.g. server FQDN or YOUR name)</label>
-          <input class="form-control" placeholder="" type="text" ng-model="cert.commonName">
+          <label> Common Name (e.g. server FQDN or YOUR name)</label>
+          <input class="form-control" placeholder="" type="text" ng-model="item.commonName">
         </div>
       </div>
 
+      <div class="form-group-2columns">
+        <div class="form-group pull-left"  ng-class="{ 'has-error' : ngError.serial }">
+          <label><span>*</span> Serial Number</label>
+          <input class="form-control" type="text" ng-model="item.serial" ng-disabled="update" focus="true" />
+        </div>
+
+        <div class="form-group pull-right"  ng-class="{ 'has-error' : ngError.issuerDN }">
+          <label><span>*</span>Issuer DN</label>
+          <input class="form-control" placeholder="" type="text" ng-model="item.issuerDN">
+        </div>
+      </div>
+
+      <div class="form-group-2columns">
+        <div class="form-group pull-left"  ng-class="{ 'has-error' : ngError.reason }">
+          <label><span>*</span> Reason</label>
+          <input class="form-control" type="text" ng-model="item.reason" ng-disabled="update" focus="true" />
+        </div>
+      </div>
+
+      <hr>
+      <div class="form-group has-error-key">
+        <strong>Or choose from certificates</strong><br />
+      </div>
+
+       <div class="form-group" ng-class="{ 'has-error' : ngError.certFingerprint }">
+        <label><span>**</span> Client certificate</label>
+        <select class="form-control" ng-options="item.commonName as 'cn=' + cert.commonName + ', o=' + cert.organization for cert in certs" ng-model="item.certFingerprint">
+          <option value="" label="No client certificate"></option>
+        </select>
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Either '<strong>Certificate</strong>' or '<strong>Password</strong>' is required!</div>
+      </div>
+
     </fieldset>
+
   </div>
+
   <div class="modal-footer">
     <!-- hasErrors Alerts -->
     <alert style="width: 50%; float: left; text-align: left; margin: 0; padding: 5px;" ng-repeat="alert in alerts.hasErrors" type="alert.type">

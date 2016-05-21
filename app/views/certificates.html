@@ -235,22 +235,19 @@
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Common Name</th>
                       <th>Serial Number</th>
-                      <th>Validity</th>
+                      <th>Issuer DN</th>
                       <th>Date Revoked</th>
+                      <th>Reason</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="table-list" ng-repeat="cert in trustedCertificates">
+                    <tr class="table-list" ng-repeat="item in revokedCerts">
                       <td data-title="# {{ $index +1 }}"><span>{{ $index +1 }}</span></td>
-                      <td data-title="Common Name">{{ cert.commonName }}</td>
-                      <td data-title="Serial Number">{{ cert.commonName }}</td>
-                      <td data-title="Validity">
-                        Start: <strong>{{ cert.validity.start | date:'yyyy-MM-dd HH:mm:ss Z' }}</strong><br />
-                        End: <strong>{{ cert.validity.end | date:'yyyy-MM-dd HH:mm:ss Z' }}</strong>
-                      </td>
-                      <td data-title="Date Revoked">{{ cert.commonName }}</td>
+                      <td data-title="Serial Number">{{ item.serial }}</td>
+                      <td data-title="Issuer DN">{{ item.issuerDN }}</td>
+                      <td data-title="Date Revoked">{{ item.dateRevoked }}</td>
+                      <td data-title="Reason">{{ item.reason }}</td>
                       <td>
                         <button class="btn btn-danger btn-xs" ng-click="confirmDelete(cert)"><i class="glyphicon glyphicon-remove"></i></button>
                       </td>
@@ -259,6 +256,14 @@
                 </table>
               </div>
             <!--MyEdit -->
+              <!-- Server Alerts -->
+              <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+              <!-- Server Alerts -->
+
+              <!-- Bottom Alerts -->
+              <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
+              <!-- Bottom Alerts -->
+
 
           </div>
         </div>
@@ -277,8 +282,8 @@
           </div>
 
 
-
         </div>
+
       </div>
     </div>
   </div>

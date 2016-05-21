@@ -26,7 +26,7 @@ angular.module('openhimConsoleApp')
 
     var notifyUser = function(){
       // reset backing object and refresh certificate list
-      Notify.notify('certificatesChanged');
+      Notify.notify('revokedCertChanged');
 
     };
 
@@ -45,25 +45,24 @@ angular.module('openhimConsoleApp')
       $scope.ngError = {};
       $scope.ngError.hasErrors = false;
 
-      // certificate validity validation
-      if( !$scope.cert.days){
+      // fingerprint validation
+      if( !$scope.item.fingerprint){
         $scope.ngError.days = true;
         $scope.ngError.hasErrors = true;
       }
-      // commonName validation
-      if( !$scope.cert.commonName){
-        $scope.ngError.commonName = true;
+      // issuer validation
+      if( !$scope.item.issuerDN){
+        $scope.ngError.issuerDN = true;
         $scope.ngError.hasErrors = true;
       }
 
-      // country validation
-      if ($scope.cert.country) {
-        if($scope.cert.country.length !== 2){
-          $scope.ngError.country = true;
-          $scope.ngError.hasErrors = true;
-        }
+      // serial validation
+      if (!$scope.item.serial) {
+        $scope.ngError.serial = true;
+        $scope.ngError.hasErrors = true;
+      
       }
-      $scope.cert.country = angular.uppercase($scope.cert.country);
+      //$scope.cert.country = angular.uppercase($scope.cert.country);
     };
 
     var NewBlob = function(data, datatype){
@@ -113,28 +112,38 @@ angular.module('openhimConsoleApp')
       $scope.validateFormCertificates();
       // save the client object if no errors are present
       if ( $scope.ngError.hasErrors === false ){
-        $scope.save($scope.cert);
+        $scope.save($scope.item);
       }
     };
 
-    $scope.cert = new Api.Certificates();
+    $scope.item = new Api.RevokedCerts();
     //$scope.cert.type = certType;
 
 
 
-    $scope.save = function (cert) {
-      saveCert(cert);
+    $scope.save = function (item) {
+      saveRevokedCert(item);
     };
 
-    var saveCert = function (cert) {
+    var saveRevokedCert = function (item) {
       // set backup client object to check if cert has changed
-      $scope.keyName = cert.commonName + '.key.pem';
-      $scope.certName = cert.commonName + '.cert.crt';
-      $scope.certBackup = angular.copy(cert);
+      //$scope.keyName = cert.commonName + '.key.pem';
+      //$scope.certName = cert.commonName + '.cert.crt';
+      //$scope.certBackup = angular.copy(cert);
       if ($scope.update) {
-        cert.$update(success, error);
+        item.$update(success, error);
       } else {
-        cert.$save({}, success, error);
+        item.$save({}, success, error);
       }
     };
+
+
+
+    // fetch the keystore for cert dropdown
+    Api.Keystore.query({ type: 'ca' }, function (certs) {
+      $scope.certs = certs;
+    });
+    
+
+
   });

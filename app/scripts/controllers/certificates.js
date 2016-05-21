@@ -358,8 +358,33 @@ angular.module('openhimConsoleApp')
       });
     };
 
+    
+    // MyEdit May 21
+        //***
+        // Initial load 
+        //***
+    var querySuccess = function(revokedCerts){
+      $scope.revokedCerts = revokedCerts;
+      if( revokedCerts.length === 0 ){
+        Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no entries in the revocation list.');
+      }
+    };
+
+    var queryError = function(err){
+      // on error - add server error alert
+      Alerting.AlertAddServerMsg(err.status);
+    };
+
+    // do the initial request
+    Api.RevokedCerts.query(querySuccess, queryError);
+
+    $scope.$on('revokedCertChanged', function () {
+      Api.RevokedCerts.query(querySuccess, queryError);
+    });
+
     //MyEdit ************* May 19 2016 **************
     
+    // Add function
     $scope.addRevokedCert = function() {
       Alerting.AlertReset();
       $scope.serverRestarting = false;
@@ -370,6 +395,10 @@ angular.module('openhimConsoleApp')
         
       });
     };
+
+    // Delete Function
+
+
     //*************************//
 
   });

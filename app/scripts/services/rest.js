@@ -71,7 +71,11 @@ angular.module('openhimConsoleApp')
       AuditsFilterOptions: $resource( server + '/audits-filter-options/', {}),
 
       // Logs API
-      Logs: $resource(server + '/logs')
+      Logs: $resource(server + '/logs'),
+
+
+      // MyEdit May 21
+      RevokedCerts: $resource( server + '/keystore/revokedcerts', {}),  
 
     };
   });
