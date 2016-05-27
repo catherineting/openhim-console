@@ -45,7 +45,18 @@
       <div class="form-group-2columns">
         <div class="form-group pull-left"  ng-class="{ 'has-error' : ngError.reason }">
           <label><span>*</span> Reason</label>
-          <input class="form-control" type="text" ng-model="item.reason" ng-disabled="update" focus="true" />
+          <!--input class="form-control" type="text" ng-model="item.reason" ng-disabled="update" focus="true" / -->
+          <select class="form-control" type="text" ng-model="item.reason" ng-disabled="update" focus="true">
+           <option value="unspecified">unspecified</option>
+           <option value="keyCompromise">keyCompromise</option>
+           <option value="cACompromise">cACompromise</option>
+           <option value="affiliationChanged">affiliationChanged</option>
+           <option value="supserseded">superseded</option>
+           <option value="cessationOfOperation">cessationOfOperation</option>
+           <option value="certificateHold">certificateHold</option>
+           <option value="privilegeWithdrawn">privilegeWithdrawn</option>
+           <option value="aACompromise">aACompromise</option>
+          </select>
         </div>
       </div>
 
@@ -56,7 +67,7 @@
 
        <div class="form-group" ng-class="{ 'has-error' : ngError.certFingerprint }">
         <label><span>**</span> Client certificate</label>
-        <select class="form-control" ng-options="item.commonName as 'cn=' + cert.commonName + ', o=' + cert.organization for cert in certs" ng-model="item.certFingerprint">
+        <select class="form-control" ng-options="item.commonName as 'cn=' + cert.commonName + ', o=' + cert.organization for cert in certs" ng-model="certFingerprint" ng-change="populateInput()">
           <option value="" label="No client certificate"></option>
         </select>
         <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Either '<strong>Certificate</strong>' or '<strong>Password</strong>' is required!</div>

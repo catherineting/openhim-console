@@ -358,10 +358,10 @@ angular.module('openhimConsoleApp')
       });
     };
 
-    
+
     // MyEdit May 21
         //***
-        // Initial load 
+        // Initial load
         //***
     var querySuccess = function(revokedCerts){
       $scope.revokedCerts = revokedCerts;
@@ -383,7 +383,7 @@ angular.module('openhimConsoleApp')
     });
 
     //MyEdit ************* May 19 2016 **************
-    
+
     // Add function
     $scope.addRevokedCert = function() {
       Alerting.AlertReset();
@@ -392,12 +392,13 @@ angular.module('openhimConsoleApp')
       $modal.open({
         templateUrl: 'views/revokedCertificateModal.html',
         controller: 'RevokedCertificatesModalCtrl',
-        
+
       });
     };
 
     // Delete Function
 
+      
 
     //*************************//
 

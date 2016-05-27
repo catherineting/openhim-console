@@ -4,15 +4,15 @@ angular.module('openhimConsoleApp')
 
     var success = function (data) {
 
-      Alerting.AlertAddMsg('top', 'success', 'The certificate has been created, download the key and cert below.');
-      var keyLink = makeTextFile(data.key);
-      $scope.downloadKeyLink = angular.copy(keyLink);
+      Alerting.AlertAddMsg('top', 'success', 'The certificate has been added to revocation list');
+      //var keyLink = makeTextFile(data.key);
+      /*$scope.downloadKeyLink = angular.copy(keyLink);
       if (keyLink){
         var certLink = makeTextFile(data.certificate);
         if (certLink){
           $scope.downloadCertLink = certLink;
         }
-      }
+      }*/
 
       notifyUser();
     };
@@ -34,6 +34,10 @@ angular.module('openhimConsoleApp')
       $modalInstance.dismiss('cancel');
     };
 
+    $scope.populateInput = function(){
+      $scope.item.commonName = $scope.certFingerprint.commonName;
+      $scope.item.fingerprint = $scope.certFingerprint.fingerprint;
+    };
 
     $scope.validateFormCertificates = function () {
       // reset hasErrors alert object
@@ -60,11 +64,10 @@ angular.module('openhimConsoleApp')
       if (!$scope.item.serial) {
         $scope.ngError.serial = true;
         $scope.ngError.hasErrors = true;
-      
       }
       //$scope.cert.country = angular.uppercase($scope.cert.country);
     };
-
+/*
     var NewBlob = function(data, datatype){
       var out;
       try {
@@ -93,7 +96,7 @@ angular.module('openhimConsoleApp')
       return out;
     };
 
-    var textFile = null;
+  /*  var textFile = null;
 
     var makeTextFile = function (text) {
       var data = new NewBlob(text, 'application/text');
@@ -106,12 +109,13 @@ angular.module('openhimConsoleApp')
         }
         return window.URL.createObjectURL(data);
       }
-    };
+    };*/
 
-    $scope.submitRevokedFormCertificate = function () {
+    $scope.submitFormRevokedCertificate = function () {
       $scope.validateFormCertificates();
       // save the client object if no errors are present
       if ( $scope.ngError.hasErrors === false ){
+
         $scope.save($scope.item);
       }
     };
@@ -130,11 +134,10 @@ angular.module('openhimConsoleApp')
       //$scope.keyName = cert.commonName + '.key.pem';
       //$scope.certName = cert.commonName + '.cert.crt';
       //$scope.certBackup = angular.copy(cert);
-      if ($scope.update) {
-        item.$update(success, error);
-      } else {
-        item.$save({}, success, error);
-      }
+
+
+      item.$save({}, success, error);
+
     };
 
 
@@ -143,7 +146,8 @@ angular.module('openhimConsoleApp')
     Api.Keystore.query({ type: 'ca' }, function (certs) {
       $scope.certs = certs;
     });
-    
+
+
 
 
   });

@@ -64,7 +64,7 @@ angular.module('openhimConsoleApp')
         update: { method: 'PUT' }
       }),
 
-      Certificates: $resource ( server + '/certificates' ,{}),
+      Certificates: $resource ( server + '/certificates' ,{}, { del: {method: 'POST'}}),
 
       // ATNA Audit log endpoint
       Audits: $resource( server + '/audits/:auditId', { auditId: '@_id' }),
@@ -75,7 +75,7 @@ angular.module('openhimConsoleApp')
 
 
       // MyEdit May 21
-      RevokedCerts: $resource( server + '/keystore/revokedcerts', {}),  
+      RevokedCerts: $resource( server + '/keystore/revokedcerts', {}),
 
     };
   });
